@@ -42,6 +42,8 @@ npm run dev
 
 O fluxo em `.github/workflows/pages.yml` constrói e publica automaticamente o site no GitHub Pages após cada alteração enviada para a branch `main`.
 
-Endereço esperado:
+Domínio principal:
 
-`https://edumimessi.github.io/luzdodharma/`
+`https://luzdodharma.com.br`
+
+O endereço `www.luzdodharma.com.br` também poderá ser direcionado para o domínio principal.
