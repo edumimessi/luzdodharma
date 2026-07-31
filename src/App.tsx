@@ -5,6 +5,7 @@ import {
   MONTH_NAMES,
   MONTHS,
 } from "./devotional-data";
+import { TEACHINGS } from "./teachings-data";
 
 const STORAGE_KEY = "caminho-e-sentido-lidos";
 const THEME_KEY = "caminho-e-sentido-tema";
@@ -29,12 +30,94 @@ function FlowerMark() {
   );
 }
 
+function Teachings() {
+  const [open, setOpen] = useState(TEACHINGS[0].id);
+
+  return (
+    <section className="teachings" id="ensinamentos">
+      <div className="teachings-heading">
+        <p className="kicker dark-kicker">Fundamentos</p>
+        <h2>Os ensinamentos do Dharma</h2>
+        <p className="teachings-lead">
+          O que o Buda ensinou, como a tradição o transmitiu e em que as
+          grandes escolas se distinguem. Uma introdução, não um tratado.
+        </p>
+      </div>
+
+      <div className="teachings-list">
+        {TEACHINGS.map((teaching) => {
+          const isOpen = open === teaching.id;
+          return (
+            <article
+              key={teaching.id}
+              className={`teaching-card ${isOpen ? "open" : ""}`}
+            >
+              <button
+                className="teaching-summary"
+                aria-expanded={isOpen}
+                onClick={() => setOpen(isOpen ? "" : teaching.id)}
+              >
+                <span className="teaching-titles">
+                  <span className="teaching-pali">{teaching.pali}</span>
+                  <strong>{teaching.name}</strong>
+                  <span className="teaching-subtitle">{teaching.subtitle}</span>
+                </span>
+                <span className="teaching-chevron" aria-hidden="true">
+                  {isOpen ? "−" : "+"}
+                </span>
+              </button>
+
+              {isOpen && (
+                <div className="teaching-body">
+                  <p className="teaching-lede">{teaching.summary}</p>
+
+                  {teaching.blocks.map((block) => (
+                    <div className="teaching-block" key={block.heading}>
+                      <h3>{block.heading}</h3>
+                      {block.paragraphs.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                      {block.items && (
+                        <dl className="teaching-terms">
+                          {block.items.map((item) => (
+                            <div key={item.term}>
+                              <dt>{item.term}</dt>
+                              <dd>{item.text}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      )}
+                    </div>
+                  ))}
+
+                  {teaching.note && (
+                    <p className="teaching-note">
+                      <strong>Nota editorial:</strong> {teaching.note}
+                    </p>
+                  )}
+                </div>
+              )}
+            </article>
+          );
+        })}
+      </div>
+
+      <p className="teachings-foot">
+        Introdução de caráter educativo. As escolas budistas divergem em pontos
+        relevantes, e nenhuma página substitui o estudo com professores
+        qualificados nem a prática em comunidade.
+      </p>
+    </section>
+  );
+}
+
 export default function Home() {
   const [selected, setSelected] = useState(0);
   const [read, setRead] = useState<Set<number>>(new Set());
   const [dark, setDark] = useState(false);
   const [copied, setCopied] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [view, setView] = useState<"devocional" | "ensinamentos">("devocional");
 
   const entry = ALL_DAYS[selected];
   const monthStart = useMemo(
@@ -130,7 +213,13 @@ export default function Home() {
             </span>
           </button>
           <div className="top-actions">
-            <button className="text-button" onClick={() => choose(todayIndex())}>
+            <button
+              className="text-button"
+              onClick={() => {
+                setView("devocional");
+                choose(todayIndex());
+              }}
+            >
               Ler hoje
             </button>
             <button
@@ -163,7 +252,13 @@ export default function Home() {
               <i />
               <span>Instituto Logos Editorial</span>
             </div>
-            <button className="hero-button" onClick={() => choose(todayIndex())}>
+            <button
+              className="hero-button"
+              onClick={() => {
+                setView("devocional");
+                choose(todayIndex());
+              }}
+            >
               Iniciar a meditação de hoje <span>→</span>
             </button>
           </div>
@@ -174,6 +269,32 @@ export default function Home() {
           </div>
         </section>
 
+        <div className="view-switch" role="group" aria-label="Seções do site">
+          <button
+            aria-pressed={view === "devocional"}
+            onClick={() => setView("devocional")}
+          >
+            Devocional diário
+          </button>
+          <button
+            aria-pressed={view === "ensinamentos"}
+            onClick={() => {
+              setView("ensinamentos");
+              requestAnimationFrame(() =>
+                document
+                  .getElementById("ensinamentos")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" }),
+              );
+            }}
+          >
+            Ensinamentos
+          </button>
+        </div>
+
+        {view === "ensinamentos" && <Teachings />}
+
+        {view === "devocional" && (
+        <>
         <nav className="month-nav" aria-label="Meses do devocional">
           <div className="month-nav-inner">
             {MONTH_NAMES.map((month, index) => (
@@ -308,6 +429,8 @@ export default function Home() {
             <strong>{next?.lens.title || "Caminho percorrido"}</strong>
           </button>
         </div>
+        </>
+        )}
 
         <section className="book-section">
           <div className="book-mark">
