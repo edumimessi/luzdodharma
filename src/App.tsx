@@ -456,6 +456,34 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="author-section" id="autor">
+          <div className="author-card">
+            <p className="kicker dark-kicker">Sobre o autor</p>
+            <h2>Dr. Eduardo D&apos;Angelo Mimessi</h2>
+            <p className="author-role">Médico e autor</p>
+            <p>
+              Médico dedicado à saúde mental e ao cuidado de pessoas que
+              procuram um sentido para a própria vida. Desse trabalho nasceu um
+              interesse duradouro pelas grandes tradições espirituais da
+              humanidade — não como curiosidade passageira, mas como as
+              respostas que homens e mulheres construíram, ao longo de séculos,
+              para as perguntas mais persistentes da existência.
+            </p>
+            <p>
+              Idealizou, escreveu e programou este devocional — das 366
+              meditações a cada linha de código do site.
+            </p>
+            <a
+              className="author-link"
+              href="https://clinicamimessi.com.br"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Conheça o trabalho do autor →
+            </a>
+          </div>
+        </section>
+
         <section className="principles">
           <div className="principles-heading">
             <p className="kicker">Um caminho para cada dia</p>
@@ -487,7 +515,7 @@ export default function Home() {
           <span>Devocional budista diário</span>
         </div>
         <p>
-          Dr. Eduardo D&apos;Angelo Mimessi · 366 meditações
+          Escrito e desenvolvido por <a href="#autor">Dr. Eduardo D&apos;Angelo Mimessi</a> · 366 meditações
           <br />
           Inspirado no volume do autor dedicado à tradição budista
         </p>
